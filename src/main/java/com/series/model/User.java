@@ -12,7 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -28,12 +30,20 @@ public class User implements Serializable {
 	private Long id;
 	
 	@NotBlank
+	@Size(min = 4, max = 15, 
+			message = "Username must be between 2 and 15 characters long")
 	private String username;
 	
+	
 	@NotBlank
+	@Size(min = 6,
+			message = "Password must be at least 6 characters long")
 	private String password;
 	
 	@NotBlank
+	@Size(max = 255,
+			message = "Email cant't be longer than 255 characters")
+	@Email(message = "Email should be of appropriate format")
 	private String email;
 	
 	@Column(nullable = false, updatable = false)
