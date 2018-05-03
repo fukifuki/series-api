@@ -19,7 +19,7 @@ import com.series.repository.UserRepository;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping
 public class UserController {
 	
 	@Autowired
