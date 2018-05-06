@@ -1,6 +1,7 @@
 package com.series.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,6 +10,9 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,6 +33,7 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(unique = true)
 	@NotBlank
 	@Size(min = 4, max = 15, 
 			message = "Username must be between 2 and 15 characters long")
@@ -55,6 +60,16 @@ public class User implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@LastModifiedDate
 	private Date updatedAt;
+	
+	@ManyToMany
+	@JoinTable(
+		name = "users_roles",
+				joinColumns = @JoinColumn(
+					name = "user_id", referencedColumnName = "id"),
+				inverseJoinColumns = @JoinColumn(
+					name = "role_id", referencedColumnName = "id"))
+	private Collection<Role> roles;
+
 	
 	public Long getId() {
 		return id;
