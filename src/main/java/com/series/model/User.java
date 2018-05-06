@@ -1,8 +1,10 @@
 package com.series.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,9 +12,6 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,11 +22,14 @@ import javax.validation.constraints.Size;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,6 +53,11 @@ public class User implements Serializable {
 	@Email(message = "Email should be of appropriate format")
 	private String email;
 	
+	@Column(nullable = false)
+	private boolean enabled;
+	
+	private Role role;
+	
 	@Column(nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreatedDate
@@ -61,15 +68,34 @@ public class User implements Serializable {
 	@LastModifiedDate
 	private Date updatedAt;
 	
-	@ManyToMany
-	@JoinTable(
-		name = "users_roles",
-				joinColumns = @JoinColumn(
-					name = "user_id", referencedColumnName = "id"),
-				inverseJoinColumns = @JoinColumn(
-					name = "role_id", referencedColumnName = "id"))
-	private Collection<Role> roles;
+	
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		authorities.add(new SimpleGrantedAuthority(role.getName()));
+		return authorities;
+	}
 
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
+	
 	
 	public Long getId() {
 		return id;
