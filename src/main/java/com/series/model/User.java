@@ -12,6 +12,8 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -56,6 +58,8 @@ public class User implements Serializable, UserDetails {
 	@Column(nullable = false)
 	private boolean enabled;
 	
+	@OneToOne
+	@JoinColumn(name = "role_id")
 	private Role role;
 	
 	@Column(nullable = false, updatable = false)
