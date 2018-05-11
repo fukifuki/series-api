@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -56,6 +57,12 @@ public class User implements Serializable, UserDetails {
 	@OneToOne
 	@JoinColumn(name = "role_id")
 	private Role role;
+	
+	@OneToMany(mappedBy = "user")
+	private Collection<PastWatching> pastWatchings;
+
+	@OneToMany(mappedBy = "user")
+	private Collection<FutureWatching> futureWatching;
 	
 //	@Column(nullable = false, updatable = false)
 //	@Temporal(TemporalType.TIMESTAMP)
