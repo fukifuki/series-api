@@ -44,6 +44,9 @@ public class Series {
 			   inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private Set<User> usersWhoWatchedSeries = new HashSet<User>();
 
+	@OneToMany(mappedBy = "series")
+	private Set<Comment> comments = new HashSet<Comment>();
+	
 	public Long getId() {
 		return id;
 	}
@@ -82,5 +85,13 @@ public class Series {
 
 	public void setUsersWhoWatchedSeries(Set<User> usersWhoWatchedSeries) {
 		this.usersWhoWatchedSeries = usersWhoWatchedSeries;
+	}
+	
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
 	}
 }
