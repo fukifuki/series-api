@@ -3,7 +3,9 @@ package com.series.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -58,12 +62,12 @@ public class User implements Serializable, UserDetails {
 	@JoinColumn(name = "role_id")
 	private Role role;
 	
-	@OneToMany(mappedBy = "user")
-	private Collection<PastWatching> pastWatchings;
+	@ManyToMany(mappedBy = "usersWhoWatchedSeries")
+	private Set<Series> watchedSeries = new HashSet<Series>();
 
-	@OneToMany(mappedBy = "user")
-	private Collection<FutureWatching> futureWatching;
-	
+	@ManyToMany(mappedBy = "usersWhoWillWatchSeries")
+	private Set<Series> seriesToWatch = new HashSet<Series>();
+		
 //	@Column(nullable = false, updatable = false)
 //	@Temporal(TemporalType.TIMESTAMP)
 //	@CreatedDate
@@ -134,6 +138,10 @@ public class User implements Serializable, UserDetails {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 	
 //    public Date getCreatedAt() {
 //        return createdAt;
@@ -150,4 +158,28 @@ public class User implements Serializable, UserDetails {
 //    public void setUpdatedAt(Date updatedAt) {
 //        this.updatedAt = updatedAt;
 //    }
+	
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public Set<Series> getWatchedSeries() {
+		return watchedSeries;
+	}
+
+	public void setWatchedSeries(Set<Series> watchedSeries) {
+		this.watchedSeries = watchedSeries;
+	}
+
+	public Set<Series> getSeriesToWatch() {
+		return seriesToWatch;
+	}
+
+	public void setSeriesToWatch(Set<Series> seriesToWatch) {
+		this.seriesToWatch = seriesToWatch;
+	}
 }
