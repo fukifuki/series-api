@@ -67,6 +67,9 @@ public class User implements Serializable, UserDetails {
 
 	@ManyToMany(mappedBy = "usersWhoWillWatchSeries")
 	private Set<Series> seriesToWatch = new HashSet<Series>();
+	
+	@OneToMany(mappedBy = "user")
+	private Set<Comment> comments = new HashSet<Comment>();
 		
 //	@Column(nullable = false, updatable = false)
 //	@Temporal(TemporalType.TIMESTAMP)
@@ -201,5 +204,13 @@ public class User implements Serializable, UserDetails {
 	public void removeSeriesFromWatchList(Series series) {
 		this.seriesToWatch.remove(series);
 		series.getUsersWhoWillWatchSeries().remove(this);
+	}
+	
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
 	}
 }
