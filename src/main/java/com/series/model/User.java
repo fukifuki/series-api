@@ -182,4 +182,24 @@ public class User implements Serializable, UserDetails {
 	public void setSeriesToWatch(Set<Series> seriesToWatch) {
 		this.seriesToWatch = seriesToWatch;
 	}
+	
+	public void addSeriesToWatchedList(Series series) {
+		this.watchedSeries.add(series);
+		series.getUsersWhoWatchedSeries().add(this);
+	}
+	
+	public void removeSeriesFromWatchedList(Series series) {
+		this.watchedSeries.remove(series);
+		series.getUsersWhoWatchedSeries().remove(this);
+	}
+	
+	public void addSeriesToWatchList(Series series) {
+		this.seriesToWatch.add(series);
+		series.getUsersWhoWillWatchSeries().add(this);
+	}
+	
+	public void removeSeriesFromWatchList(Series series) {
+		this.seriesToWatch.remove(series);
+		series.getUsersWhoWillWatchSeries().remove(this);
+	}
 }
