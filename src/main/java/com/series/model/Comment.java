@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -29,10 +30,12 @@ public class Comment {
 
 	@ManyToOne
 	@JoinColumn(name = "series_id")
+	@NotNull
 	private Series series;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
+	@NotNull
 	private User user;
 
 	public Series getSeries() {
@@ -64,6 +67,5 @@ public class Comment {
 	public void setBody(String body) {
 		this.body = body;
 	}
-	
-	
+		
 }
