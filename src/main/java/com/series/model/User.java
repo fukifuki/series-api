@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -73,7 +74,11 @@ public class User implements Serializable, UserDetails {
 	
 	@OneToMany(mappedBy = "user")
 	private Set<Comment> comments = new HashSet<Comment>();
-		
+
+	@OneToMany(mappedBy = "primaryKey.user",
+			   cascade = CascadeType.ALL)
+	private Set<SeriesRating> seriesRatings = new HashSet<SeriesRating>();
+	
 //	@Column(nullable = false, updatable = false)
 //	@Temporal(TemporalType.TIMESTAMP)
 //	@CreatedDate
@@ -216,4 +221,13 @@ public class User implements Serializable, UserDetails {
 	public void setComments(Set<Comment> comments) {
 		this.comments = comments;
 	}
+
+	public Set<SeriesRating> getSeriesRatings() {
+		return seriesRatings;
+	}
+
+	public void setSeriesRatings(Set<SeriesRating> seriesRatings) {
+		this.seriesRatings = seriesRatings;
+	}
+		
 }
