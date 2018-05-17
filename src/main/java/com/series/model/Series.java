@@ -3,6 +3,7 @@ package com.series.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -46,6 +47,10 @@ public class Series {
 
 	@OneToMany(mappedBy = "series")
 	private Set<Comment> comments = new HashSet<Comment>();
+	
+	@OneToMany(mappedBy = "primaryKey.series",
+			   cascade = CascadeType.ALL)
+	private Set<SeriesRating> seriesRatings = new HashSet<SeriesRating>();
 	
 	public Long getId() {
 		return id;
@@ -93,5 +98,9 @@ public class Series {
 
 	public void setComments(Set<Comment> comments) {
 		this.comments = comments;
+	}
+	
+	public void addComment() {
+		
 	}
 }
