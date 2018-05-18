@@ -35,6 +35,10 @@ public class Series {
 	@NotBlank
 	private String description;
 
+//	TODO Maybe use some constraint here considering year format (number of digits, for example) 
+	@NotBlank
+	private short yearStarted;
+	
 //	associated entities data fields
 	@ManyToOne
 	@JoinColumn(name = "series_id")
