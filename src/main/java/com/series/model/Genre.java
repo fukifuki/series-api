@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "genres")
 public class Genre {
@@ -24,6 +26,7 @@ public class Genre {
 	@NotBlank
 	private String name;
 
+	@JsonIgnore
 	@OneToMany
 	private Set<Series> series = new HashSet<Series>();
 	
@@ -51,5 +54,13 @@ public class Genre {
 		this.name = name;
 	}
 	
+	public void addSeries(Series series) {
+		this.series.add(series);
+		series.setGenre(this);
+	}
 	
+	public void removeSeries(Series series) {
+		this.series.remove(series);
+		series.setGenre(null);
+	}
 }
