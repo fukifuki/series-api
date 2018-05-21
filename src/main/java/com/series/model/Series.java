@@ -36,13 +36,13 @@ public class Series {
 	private String description;
 
 //	TODO Maybe use some constraint here considering year format (number of digits, for example) 
-	@NotBlank
 	private short yearStarted;
 	
 //	associated entities data fields
+//  this should in general be a many-to-many association, but let it be this way for now
+//	TODO make this proper association type
 	@ManyToOne
-	@JoinColumn(name = "series_id")
-	@NotNull
+	@JoinColumn(name = "genre_id")
 	private Genre genre;
 	
 	@ManyToMany
@@ -98,6 +98,14 @@ public class Series {
 
 	public void setGenre(Genre genre) {
 		this.genre = genre;
+	}
+	
+	public short getYearStarted() {
+		return yearStarted;
+	}
+
+	public void setYearStarted(short yearStarted) {
+		this.yearStarted = yearStarted;
 	}
 
 	public Set<SeriesRating> getSeriesRatings() {
