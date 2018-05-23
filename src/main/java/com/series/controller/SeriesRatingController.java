@@ -1,10 +1,12 @@
 package com.series.controller;
 
 import java.security.Principal;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.series.dto.SeriesRatingDto;
 import com.series.model.Series;
+import com.series.model.SeriesRating;
 import com.series.model.User;
 import com.series.service.SeriesRatingService;
 import com.series.service.SeriesService;
@@ -31,10 +34,19 @@ public class SeriesRatingController {
 	@Autowired
 	SeriesService seriesService;
 	
+	@GetMapping("/{seriesId}/ratings")
+	public Set<SeriesRating> getSeriesRatings(@PathVariable("seriesId") Long seriesId) {
+
+		Series series = seriesService.findById(seriesId);
+
+		return seriesRatingService.getSeriesRatings(series);
+	}
+	
 	@PostMapping("/{seriesId}/ratings")
 	public void rateSeries(@PathVariable("seriesId") Long seriesId,
 						   @Valid @RequestBody SeriesRatingDto seriesRatingDto,
 						   Principal principal) {
+		
 		User user = userService.findByUsername(principal.getName()); 
 		Series series = seriesService.findById(seriesId);
 		
