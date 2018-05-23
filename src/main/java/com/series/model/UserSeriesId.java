@@ -7,6 +7,9 @@ import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 @Embeddable
 public class UserSeriesId implements Serializable {
 	

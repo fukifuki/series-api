@@ -11,6 +11,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Range;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "series_ratings")
 @AssociationOverrides({
@@ -19,7 +21,8 @@ import org.hibernate.validator.constraints.Range;
 	@AssociationOverride(name = "primaryKey.series",
 						 joinColumns = @JoinColumn(name = "series_id")) })
 public class SeriesRating {
-	
+
+
 	@EmbeddedId
 	@Column(unique = true)
 	private UserSeriesId primaryKey = new UserSeriesId();
