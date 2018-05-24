@@ -8,13 +8,13 @@ import com.series.model.Series;
 public interface SeriesService {
 	
 //	TODO List or Set?
-	List<Series> getAllSeries();
+	List<SeriesDto> getAllSeries();
 		
-	Series findById(Long seriesId);
+	SeriesDto findById(Long seriesId);
 
-	List<Series> findByTitle(String title);
+	List<SeriesDto> findByTitle(String title);
 	
-	List<Series> findByGenre(String genre);
+	List<SeriesDto> findByGenre(String genre);
 	
 	Series saveSeries(SeriesDto seriesDto);
 	

@@ -1,6 +1,5 @@
 package com.series.service;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import com.series.dto.SeriesRatingDto;
 import com.series.model.Series;
 import com.series.model.SeriesRating;
 import com.series.model.User;
-import com.series.model.UserSeriesId;
 import com.series.repository.SeriesRatingRepository;
 import com.series.repository.SeriesRepository;
 
@@ -28,17 +26,22 @@ public class SeriesRatingServiceImpl implements SeriesRatingService {
 	SeriesRepository seriesRepository;
 	
 	@Override
-	public Set<SeriesRatingDto> getSeriesRatings(Series series) {
+	public Set<SeriesRatingDto> getSeriesRatings(Long seriesId) {
 		
+//		TODO handle exception here
+//		     or rather move series finding into separate private method (because it's called more then once) and handle exception there
+		Series series = seriesRepository.getOne(seriesId);
 		Set<SeriesRating> seriesRatings = series.getSeriesRatings();
 		
 		return seriesRatingConverter.createFromEntities(seriesRatings);
 	}
 	
-//	Change arguments order here!
+//	TODO Change arguments order here!
 	@Override
-	public SeriesRating rateSeries(User user, Series series, SeriesRatingDto seriesRatingDto) {
+	public SeriesRating rateSeries(User user, Long seriesId, SeriesRatingDto seriesRatingDto) {
 		
+//		TODO handle exception here
+		Series series = seriesRepository.getOne(seriesId);
 		SeriesRating seriesRating = seriesRatingConverter.createFromDto(seriesRatingDto, user, series);
 		
 		return seriesRatingRepository.save(seriesRating);
