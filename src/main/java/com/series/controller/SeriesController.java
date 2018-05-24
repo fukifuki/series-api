@@ -25,7 +25,7 @@ public class SeriesController {
 	SeriesService seriesService;
 		
 	@GetMapping("/series")
-	public List<Series> getAllSeries() {
+	public List<SeriesDto> getAllSeries() {
 		return seriesService.getAllSeries();
 	}
 	
@@ -36,7 +36,7 @@ public class SeriesController {
 	
 //	What about exception handling here?
 	@GetMapping("/series/{id}")
-	public Series getSeriesById(@PathVariable(value = "id") Long seriesId) {		
+	public SeriesDto getSeriesById(@PathVariable(value = "id") Long seriesId) {		
 		return seriesService.findById(seriesId);
 	}
 	
