@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.series.converter.SeriesConverter;
 import com.series.dto.SeriesDto;
 import com.series.exception.ResourceNotFoundException;
 import com.series.model.Genre;
@@ -16,6 +17,9 @@ import com.series.repository.SeriesRepository;
 public class SeriesServiceImpl implements SeriesService {
 	
 	@Autowired
+	SeriesConverter seriesConverter;
+	
+	@Autowired
 	SeriesRepository seriesRepository;
 	
 	@Autowired
@@ -25,55 +29,58 @@ public class SeriesServiceImpl implements SeriesService {
 //  Probably all the methods in this service should return ordred lists...	
 	
 	@Override
-	public List<Series> getAllSeries() {
-		return seriesRepository.findAll();
+	public List<SeriesDto> getAllSeries() {
+		List<Series> series = seriesRepository.findAll();
+		
+		return seriesConverter.createFromEntities(series);
 	}
 	
 //	How to rely on implicit implementing of 'findBy...' JpaRepo interface methods and simultaneously be able to to throw custom exception?
 //	Should 'throws' ...Exception be part of method definition here? 
 	@Override
-	public Series findById(Long seriesId) throws ResourceNotFoundException {
-		return seriesRepository.findById(seriesId)
+	public SeriesDto findById(Long seriesId) throws ResourceNotFoundException {
+		Series series = seriesRepository.findById(seriesId)
 				.orElseThrow(() -> new ResourceNotFoundException("Series", "id", seriesId));
+		
+		return seriesConverter.createFromEntity(series);
 	}
 
 //	Should I return an exception here if no series with a givent title is found or should I just return an empty list?
 	@Override
-	public List<Series> findByTitle(String title) {
-		return seriesRepository.findByTitle(title);
+	public List<SeriesDto> findByTitle(String title) {
+		
+		List<Series> series = seriesRepository.findByTitle(title);
+			
+		return seriesConverter.createFromEntities(series);
 	}
 
 //	TODO handle exceptions here
 //	Igor said that I shouldn't call another service from the inside of a service
 //	but where should I handle exception if no genre with a given genre name is found
 	@Override
-	public List<Series> findByGenre(String genreName) {
+	public List<SeriesDto> findByGenre(String genreName) {
+		
 		Genre genre = genreRepository.findOneByNameIgnoreCase(genreName);
-		return seriesRepository.findByGenre(genre); 
+		List<Series> series = seriesRepository.findByGenre(genre);
+		
+		return seriesConverter.createFromEntities(series);
 	}
 
 //	TODO handle exceptions in create/update series methods
 //	TODO those two methods have duplicate code which could be put into the separate method together with exception handling that corresponds to specific value assigning
 	@Override
 	public Series saveSeries(SeriesDto seriesDto) {
-		Series series = new Series();
-		series.setTitle(seriesDto.getTitle());
-		series.setDescription(seriesDto.getDescription());
-		series.setYearStarted(seriesDto.getYearStarted());
-		Genre genre = genreRepository.findOneByNameIgnoreCase(seriesDto.getGenreName());
-		series.setGenre(genre);
+		
+		Series series = seriesConverter.createFromDto(seriesDto);
 		
 		return seriesRepository.save(series);
 	}
 
 	@Override
 	public Series updateSeries(Long seriesId, SeriesDto seriesDto) {
+		
 		Series series = seriesRepository.getOne(seriesId);
-		series.setTitle(seriesDto.getTitle());
-		series.setDescription(seriesDto.getDescription());
-		series.setYearStarted(seriesDto.getYearStarted());
-		Genre genre = genreRepository.findOneByNameIgnoreCase(seriesDto.getGenreName());
-		series.setGenre(genre);
+		seriesConverter.updateFromDto(series, seriesDto);
 
 		return seriesRepository.save(series);
 	}
