@@ -16,13 +16,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "series")
 @EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Series {
 	
 	@Id
@@ -45,21 +48,19 @@ public class Series {
 	@JoinColumn(name = "genre_id")
 	private Genre genre;
 	
-	@ManyToMany
-	@JoinTable(name = "series_to_watch", 
-			   joinColumns = @JoinColumn(name = "series_id"),
-			   inverseJoinColumns = @JoinColumn(name = "user_id"))
+	@JsonIgnore
+	@ManyToMany(mappedBy = "seriesToWatch")
 	private Set<User> usersWhoWillWatchSeries = new HashSet<User>();
 
-	@ManyToMany
-	@JoinTable(name = "watched_series", 
-			   joinColumns = @JoinColumn(name = "series_id"),
-			   inverseJoinColumns = @JoinColumn(name = "user_id"))
+	@JsonIgnore
+	@ManyToMany(mappedBy = "watchedSeries")
 	private Set<User> usersWhoWatchedSeries = new HashSet<User>();
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "series")
 	private Set<Comment> comments = new HashSet<Comment>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "primaryKey.series",
 			   cascade = CascadeType.ALL)
 	private Set<SeriesRating> seriesRatings = new HashSet<SeriesRating>();
