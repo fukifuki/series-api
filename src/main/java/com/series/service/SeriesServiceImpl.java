@@ -69,20 +69,20 @@ public class SeriesServiceImpl implements SeriesService {
 //	TODO handle exceptions in create/update series methods
 //	TODO those two methods have duplicate code which could be put into the separate method together with exception handling that corresponds to specific value assigning
 	@Override
-	public Series saveSeries(SeriesDto seriesDto) {
+	public SeriesDto saveSeries(SeriesDto seriesDto) {
 		
 		Series series = seriesConverter.createFromDto(seriesDto);
 		
-		return seriesRepository.save(series);
+		return seriesConverter.createFromEntity(seriesRepository.save(series));
 	}
 
 	@Override
-	public Series updateSeries(Long seriesId, SeriesDto seriesDto) {
+	public SeriesDto updateSeries(Long seriesId, SeriesDto seriesDto) {
 		
 		Series series = seriesRepository.getOne(seriesId);
-		seriesConverter.updateFromDto(series, seriesDto);
+		Series updatedSeries = seriesConverter.updateFromDto(series, seriesDto);
 
-		return seriesRepository.save(series);
+		return seriesConverter.createFromEntity(seriesRepository.save(updatedSeries));
 	}
 	
 }

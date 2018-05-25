@@ -3,7 +3,6 @@ package com.series.service;
 import java.util.List;
 
 import com.series.dto.SeriesDto;
-import com.series.model.Series;
 
 public interface SeriesService {
 	
@@ -16,10 +15,11 @@ public interface SeriesService {
 	
 	List<SeriesDto> findByGenre(String genre);
 	
-	Series saveSeries(SeriesDto seriesDto);
+	SeriesDto saveSeries(SeriesDto seriesDto);
 	
-	Series updateSeries(Long seriesId, SeriesDto seriesDto);
+	SeriesDto updateSeries(Long seriesId, SeriesDto seriesDto);
 	
 //	TODO findNewerThen
 //	TODO findOlderThen
+//	TODO findTopRated
 }
