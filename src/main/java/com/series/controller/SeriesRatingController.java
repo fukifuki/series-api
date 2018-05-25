@@ -35,11 +35,10 @@ public class SeriesRatingController {
 	SeriesService seriesService;
 	
 	@GetMapping("/{seriesId}/ratings")
-	public Set<SeriesRating> getSeriesRatings(@PathVariable("seriesId") Long seriesId) {
+	public Set<SeriesRatingDto> getSeriesRatings(@PathVariable("seriesId") Long seriesId) {
 
-		Series series = seriesService.findById(seriesId);
-
-		return seriesRatingService.getSeriesRatings(series);
+//		TODO catch exception here
+		return seriesRatingService.getSeriesRatings(seriesId);
 	}
 	
 	@PostMapping("/{seriesId}/ratings")
@@ -48,9 +47,8 @@ public class SeriesRatingController {
 						   Principal principal) {
 		
 		User user = userService.findByUsername(principal.getName()); 
-		Series series = seriesService.findById(seriesId);
 		
-		seriesRatingService.rateSeries(user, series, seriesRatingDto);
+		seriesRatingService.rateSeries(user, seriesId, seriesRatingDto);
 	}
 	
 }
