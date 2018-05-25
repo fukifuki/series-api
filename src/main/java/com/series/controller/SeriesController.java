@@ -30,7 +30,7 @@ public class SeriesController {
 	}
 	
 	@PostMapping("/series")
-	public Series createSeries(@Valid @RequestBody SeriesDto seriesDto) {
+	public SeriesDto createSeries(@Valid @RequestBody SeriesDto seriesDto) {
 		return seriesService.saveSeries(seriesDto);
 	}
 	
@@ -42,10 +42,9 @@ public class SeriesController {
 	
 //	TODO use service instead of repository
 	@PutMapping("/series/{id}")
-	public Series updateSeries(@PathVariable(value = "id") Long seriesId, @Valid @RequestBody SeriesDto seriesDto) {
+	public SeriesDto updateSeries(@PathVariable(value = "id") Long seriesId, @Valid @RequestBody SeriesDto seriesDto) {
 //		or should I call findById and than saveSeries service methods here in updateSeries method???
 //		In that case separate updateSeries in seriesService wouldn't be needed
 		return seriesService.updateSeries(seriesId, seriesDto);
 	}
-	
 }
