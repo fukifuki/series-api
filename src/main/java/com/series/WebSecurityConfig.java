@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-//		ignore assets here...
+//		TODO ignore assets here...
 	}
 	
 	@Override
@@ -45,18 +45,38 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.csrf().disable()
 			.authorizeRequests()
-				.antMatchers("/", "/signup").permitAll()
-				.antMatchers("/hello").authenticated()
-				.antMatchers(HttpMethod.POST, "/users").permitAll()
+//				anyone
 				.antMatchers(HttpMethod.GET, "/series").permitAll()
-				.antMatchers(HttpMethod.GET, "/series/{^[\\d]$}").authenticated()
-//				.anyRequest().authenticated()
+				.antMatchers(HttpMethod.GET, "/users").permitAll()
+//				.antMatchers("/", "/signup").permitAll()
+//				.antMatchers(HttpMethod.POST, "/users").permitAll()
+//				.antMatchers(HttpMethod.GET, "/series").permitAll()
+//				.antMatchers(HttpMethod.GET, "/series/{^[\\d]$}").permitAll()
+//				.antMatchers(HttpMethod.POST, "/series").permitAll()
+//				
+//				.antMatchers(HttpMethod.POST, "/series").permitAll()
+//
+////				only authenticated
+				.antMatchers("/hello").authenticated()
+//				.antMatchers("/users/**").authenticated()
+//				
+////				only registered user
+////				--- leaving comments or rate a series, for example
+//			    
+////				only site administrator
+//				.antMatchers("/series/**").hasRole("ADMIN")
+//				.antMatchers("/genre/**").hasRole("ADMIN")
+				
+				.anyRequest().permitAll()
+				
 				.and()
+//			
 			.formLogin()
 				.loginPage("/login")
+//				logout page
 				.permitAll();
-//				.successHandler(loginSuccessHandler())
-//				.failureHandler(loginFailureHandler())
+////				.successHandler(loginSuccessHandler())
+////				.failureHandler(loginFailureHandler())
 	}
 
 //	public AuthenticationSuccessHandler loginSuccessHandler() {
