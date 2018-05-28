@@ -80,7 +80,6 @@ public class User implements Serializable, UserDetails {
 			   inverseJoinColumns = @JoinColumn(name = "series_id"))
 	private Set<Series> seriesToWatch = new HashSet<Series>();
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private Set<Comment> comments = new HashSet<Comment>();
 
