@@ -18,11 +18,15 @@ import com.series.exception.ResourceNotFoundException;
 import com.series.model.User;
 import com.series.repository.UserRepository;
 import com.series.service.RegistrationService;
+import com.series.service.UserService;
 
 
 @RestController
 @RequestMapping
 public class UserController {
+	
+	@Autowired
+	UserService userService;
 	
 	@Autowired
 	UserRepository userRepository;
@@ -31,41 +35,42 @@ public class UserController {
 	RegistrationService registrationService;
 	
 	@GetMapping("/users")
-	public List<User> getAllUsers() {
-		return userRepository.findAll();
+	public List<UserDto> getAllUsers() {
+		
+		return userService.getAllUsers();
 	}
 	
+//	TODO return value???
 	@PostMapping("/users")
 	public User createUser(@Valid @RequestBody UserDto userDto) {
 
 // TODO Move .registerNewUser method call into try block
 // TODO Define exception
 //		User user = null;
-		User user = registrationService.registerNewUser(userDto);
 //		try {
 //			user = registrationService.registerNewUser(userDto);
 //		} catch {
 //			throw exception
 //		}
 		
+//		TODO I'll probably move this user creation method into UserService 
+		User user = registrationService.registerNewUser(userDto);
+		
+//		TODO User or UserDto
 		return user;
 	}
 	
 	@GetMapping("/users/{id}")
-	public User getUserById(@PathVariable(value = "id") Long userId) {
-		return userRepository.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+	public UserDto getUserById(@PathVariable(value = "id") Long userId) {
+
+//		TODO catch exception
+		return userService.findById(userId);
 	}
 	
 	@PutMapping("/users/{id}")
-	public User updateUser(@PathVariable(value = "id") Long userId, @Valid @RequestBody User userDetails) {
-		User user = userRepository.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
-		user.setUsername(userDetails.getEmail());
-		user.setPassword(userDetails.getPassword());
-		user.setEmail(userDetails.getEmail());
+	public UserDto updateUser(@PathVariable(value = "id") Long userId, @Valid @RequestBody UserDto userDto) {
 		
-		User updatedUser = userRepository.save(user);
-		return updatedUser;
+//		TODO catch exception
+		return userService.update(userId, userDto);		
 	}
 }
