@@ -24,6 +24,8 @@ public class SeriesConverterImpl implements SeriesConverter {
 	public Series createFromDto(SeriesDto dto) {
 		Series series = new Series();
 	
+//		id is generated when series is being save to the db, so it shouldn't be set in this place...
+//		series.setId(dto.getId());
 		series.setTitle(dto.getTitle());
 		series.setDescription(dto.getDescription());
 		series.setYearStarted(dto.getYearStarted());
@@ -47,6 +49,7 @@ public class SeriesConverterImpl implements SeriesConverter {
 	@Override
 	public SeriesDto createFromEntity(Series series) {
 		SeriesDto dto = new SeriesDto();
+		dto.setId(series.getId());
 		dto.setTitle(series.getTitle());
 		dto.setDescription(series.getDescription());
 		dto.setYearStarted(series.getYearStarted());
