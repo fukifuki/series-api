@@ -1,23 +1,11 @@
 package com.series.dto;
 
-import javax.validation.constraints.NotBlank;
-
 public class SeriesDto {
 	
-//	TODO Remove validations from all Dtos class definitions
-	
-	@NotBlank
 	private Long id;
-
-	@NotBlank
 	private String title;
-	
-	@NotBlank
 	private String description;
-	
 	private short yearStarted;
-
-	@NotBlank
 	private String genreName;
 	
 //	getters/setters
