@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -47,7 +46,8 @@ public class Series {
 	@ManyToOne
 	@JoinColumn(name = "genre_id")
 	private Genre genre;
-	
+
+//  TODO Remove @JsonIgnore annotations when you make it safe to do so	
 	@JsonIgnore
 	@ManyToMany(mappedBy = "seriesToWatch")
 	private Set<User> usersWhoWillWatchSeries = new HashSet<User>();
