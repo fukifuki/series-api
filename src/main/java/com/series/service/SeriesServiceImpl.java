@@ -3,6 +3,7 @@ package com.series.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.series.converter.SeriesConverter;
@@ -12,6 +13,8 @@ import com.series.model.Genre;
 import com.series.model.Series;
 import com.series.repository.GenreRepository;
 import com.series.repository.SeriesRepository;
+import com.series.specification.SeriesSpecificationBuilder;
+import com.series.web.util.SearchCriterion;
 
 @Service
 public class SeriesServiceImpl implements SeriesService {
@@ -29,9 +32,14 @@ public class SeriesServiceImpl implements SeriesService {
 //  Probably all the methods in this service should return ordred lists...	
 	
 	@Override
-	public List<SeriesDto> getAllSeries() {
-		List<Series> series = seriesRepository.findAll();
+	public List<SeriesDto> getAllSeries(List<SearchCriterion> searchCriteria) {
+		SeriesSpecificationBuilder builder = new SeriesSpecificationBuilder();
 		
+		searchCriteria.forEach(crit -> {
+			builder.with(crit.getKey(), crit.getOperation(), crit.getValue());
+		});
+		Specification<Series> spec = builder.build();
+		List<Series> series = seriesRepository.findAll(spec);
 		return seriesConverter.createFromEntities(series);
 	}
 	

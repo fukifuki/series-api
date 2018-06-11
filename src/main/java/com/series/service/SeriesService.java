@@ -3,11 +3,12 @@ package com.series.service;
 import java.util.List;
 
 import com.series.dto.SeriesDto;
+import com.series.web.util.SearchCriterion;
 
 public interface SeriesService {
 	
 //	TODO List or Set?
-	List<SeriesDto> getAllSeries();
+	List<SeriesDto> getAllSeries(List<SearchCriterion> searchCriteria);
 		
 	SeriesDto findById(Long seriesId);
 
