@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.series.dto.CommentDto;
+import com.series.dto.UserDto;
 import com.series.model.Comment;
 import com.series.model.User;
 import com.series.service.CommentService;
@@ -60,7 +61,8 @@ public class CommentController {
 								      @Valid @RequestBody CommentDto commentDto, 
 								      Principal principal) {
 		
-		User user = userService.findByUsername(principal.getName());
+		UserDto user = userService.findByUsername(principal.getName());
+		Long userId = user.getId();
 //		find series
 //		Series series = null;
 //		try {
@@ -69,7 +71,7 @@ public class CommentController {
 ////			...
 //		}
 		
-		return commentService.createNewComment(user, seriesId, commentDto);
+		return commentService.createNewComment(userId, seriesId, commentDto);
 	}
 	
 	

@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.series.dto.SeriesRatingDto;
-import com.series.model.Series;
-import com.series.model.SeriesRating;
-import com.series.model.User;
+import com.series.dto.UserDto;
 import com.series.service.SeriesRatingService;
 import com.series.service.SeriesService;
 import com.series.service.UserService;
@@ -46,9 +44,10 @@ public class SeriesRatingController {
 						   @Valid @RequestBody SeriesRatingDto seriesRatingDto,
 						   Principal principal) {
 		
-		User user = userService.findByUsername(principal.getName()); 
+		UserDto user = userService.findByUsername(principal.getName());
+		Long userId = user.getId();
 		
-		seriesRatingService.rateSeries(user, seriesId, seriesRatingDto);
+		seriesRatingService.rateSeries(userId, seriesId, seriesRatingDto);
 	}
 	
 }

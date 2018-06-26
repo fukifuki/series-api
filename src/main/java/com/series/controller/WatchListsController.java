@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.series.dto.UserDto;
 import com.series.model.Series;
 import com.series.model.User;
 import com.series.repository.UserRepository;
@@ -38,10 +39,10 @@ public class WatchListsController {
 //		Tried to get the user this way, by calling service method that calls getName() on principal object, but got NullPointer exception
 //		User user = userService.getLoggedInUser();
 		
-		User user = userService.findByUsername(principal.getName()); 
-		System.out.println(user);
+		UserDto user = userService.findByUsername(principal.getName()); 
+		Long userId = user.getId();
 		
-		return watchlistsService.getWatchList(user);
+		return watchlistsService.getWatchList(userId);
 	}
 	
 //	return value type?
@@ -49,24 +50,27 @@ public class WatchListsController {
 	public Series addSeriesToWatchList(@PathVariable("seriesId") Long seriesId, Principal principal) {
 
 //		TODO This should be done before any method call in this controller 
-		User user = userService.findByUsername(principal.getName());
+		UserDto user = userService.findByUsername(principal.getName());
+		Long userId = user.getId();
 		
-		return watchlistsService.saveToWatchlist(user, seriesId);
+		return watchlistsService.saveToWatchlist(userId, seriesId);
 	}
 	
 	@GetMapping("/watchedlist")
 	public Set<Series> getWatchedListForUsername(Principal principal) {
 		
-		User user = userService.findByUsername(principal.getName());
+		UserDto user = userService.findByUsername(principal.getName());
+		Long userId = user.getId();
 		
-		return watchlistsService.getWatchedSeriesList(user);	
+		return watchlistsService.getWatchedSeriesList(userId);	
 	}
 	
 	public Series addSeriesToWatchedList(@PathVariable("seriesId") Long seriesId, Principal principal) {
 		
-		User user = userService.findByUsername(principal.getName());
-
-		return watchlistsService.saveToWatchedSeriesList(user, seriesId);
+		UserDto user = userService.findByUsername(principal.getName());
+		Long userId = user.getId();
+		
+		return watchlistsService.saveToWatchedSeriesList(userId, seriesId);
 	}
 
 }
