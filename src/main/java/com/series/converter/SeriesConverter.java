@@ -13,8 +13,8 @@ public interface SeriesConverter {
 	
 	SeriesDto createFromEntity(Series series);
 
-//	I don't need this method, at least 
-//	Set<Series> createFromDtos(Set<SeriesDto> dtos);
+//	I don't need this method, at least for now
+//	List<Series> createFromDtos(Set<SeriesDto> dtos);
 	
 //	TODO Be more consistent when it comes to returning types of lists of resources...
 	List<SeriesDto> createFromEntities(List<Series> series);
