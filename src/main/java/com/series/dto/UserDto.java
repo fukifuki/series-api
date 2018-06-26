@@ -3,21 +3,25 @@ package com.series.dto;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.series.model.Role;
+
 public class UserDto {
 	
-	@NotNull
-	@NotEmpty
+	private Long id;
 	private String username;
-	
-	@NotNull
-	@NotEmpty
 	private String password;
-	
 //	TODO Add matchingPassword
-	
-	@NotNull
-	@NotEmpty
 	private String email;
+	private String role;
+	
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getUsername() {
 		return username;
@@ -41,6 +45,15 @@ public class UserDto {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+//	maybe I should put this role name adjustment into private method... ?
+	public void setRole(Role role) {
+		this.role = role.getName().replace("ROLE_", "");
 	}
 	
 }
