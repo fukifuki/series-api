@@ -8,7 +8,7 @@ import com.series.model.User;
 
 public interface CommentService {
 
-	Comment createNewComment(Long userId, Long seriesId, CommentDto commentDto);
+	CommentDto createNewComment(Long userId, Long seriesId, CommentDto commentDto);
 	
 	List<CommentDto> getCommentsForSeries(Long seriesId);
 }

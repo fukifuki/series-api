@@ -7,6 +7,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.series.converter.CommentConverter;
 import com.series.dto.CommentDto;
 import com.series.model.Comment;
 import com.series.model.Series;
@@ -27,8 +28,11 @@ public class CommentServiceImpl implements CommentService {
 	@Autowired
 	SeriesRepository seriesRepository;
 	
+	@Autowired
+	CommentConverter commentConverter;
+	
 	@Override
-	public Comment createNewComment(Long userId, Long seriesId, CommentDto commentDto) {
+	public CommentDto createNewComment(Long userId, Long seriesId, CommentDto commentDto) {
 		
 //		should I handle nonexistant series case here or elsewhere?
 //		TODO there should probably be one central place with the method for retrieving series
@@ -42,7 +46,7 @@ public class CommentServiceImpl implements CommentService {
 		comment.setSeries(series);
 		comment.setBody(commentDto.getBody());
 		
-		return commentRepository.save(comment);
+		return commentConverter.createFromEntity(commentRepository.save(comment));
 	}
 
 	@Override

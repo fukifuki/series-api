@@ -57,7 +57,7 @@ public class CommentController {
 	
 //	What should be a return value for this method if there should be any return value?
 	@PostMapping("/{seriesId}/comments")
-	public Comment addCommentToSeries(@PathVariable("seriesId") Long seriesId, 
+	public CommentDto addCommentToSeries(@PathVariable("seriesId") Long seriesId, 
 								      @Valid @RequestBody CommentDto commentDto, 
 								      Principal principal) {
 		

@@ -1,14 +1,18 @@
 package com.series.dto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
 public class CommentDto {
 	
-	@NotBlank
-	@Size(max = 255,
-			message = "Comment cannot be longer than 255 characters")
+	private Long id;
 	private String body;
+
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getBody() {
 		return body;
