@@ -1,8 +1,5 @@
 package com.series.dto;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
 import com.series.model.Role;
 
 public class UserDto {
