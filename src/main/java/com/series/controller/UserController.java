@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,12 +28,10 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
-	
-	@Autowired
-	UserRepository userRepository;
 
 	@Autowired
 	RegistrationService registrationService;
+	
 	
 	@GetMapping("/users")
 	public List<UserDto> getAllUsers() {
@@ -53,18 +52,27 @@ public class UserController {
 //			throw exception
 //		}
 		
-//		TODO I'll probably move this user creation method into UserService 
+//		TODO Move this user creation method into UserService 
 		User user = registrationService.registerNewUser(userDto);
 		
 //		TODO User or UserDto
 		return user;
 	}
 	
-	@GetMapping("/users/{id}")
-	public UserDto getUserById(@PathVariable(value = "id") Long userId) {
-
+//	@PreAuthorize("#id == principal.getUserId")
+//	@GetMapping("/users/{id}")
+//	public UserDto getUserById(@PathVariable(value = "id") Long userId) {
+//
+////		TODO catch exception
+//		return userService.findById(userId);
+//	}
+	
+	@PreAuthorize("#username == principal.username")
+	@GetMapping("/users/{username}")
+	public UserDto getUserByUsername(@PathVariable(value = "username") String username) {
+		
 //		TODO catch exception
-		return userService.findById(userId);
+		return userService.findByUsername(username);
 	}
 	
 	@PutMapping("/users/{id}")
