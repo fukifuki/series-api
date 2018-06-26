@@ -7,16 +7,21 @@ import org.springframework.data.repository.query.spi.EvaluationContextExtension;
 import org.springframework.data.repository.query.spi.EvaluationContextExtensionSupport;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.expression.SecurityExpressionRoot;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.series.config.JwtAuthenticationEntryPoint;
+import com.series.config.JwtAuthenticationFilter;
 import com.series.service.UserService;
 
 @Configuration
@@ -26,13 +31,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private JwtAuthenticationEntryPoint unauthorizedHandler;
+	
+	
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
 	}
 	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+	}
+	
+	@Bean
+	public JwtAuthenticationFilter authenticationTokenFilterBean() throws Exception {
+		return new JwtAuthenticationFilter();
 	}
 	
 	@Override
@@ -45,49 +65,44 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.csrf().disable()
 			.authorizeRequests()
-//				anyone
-				.antMatchers(HttpMethod.GET, "/series").permitAll()
-				.antMatchers(HttpMethod.GET, "/users").permitAll()
-//				.antMatchers("/", "/signup").permitAll()
-//				.antMatchers(HttpMethod.POST, "/users").permitAll()
-//				.antMatchers(HttpMethod.GET, "/series").permitAll()
-//				.antMatchers(HttpMethod.GET, "/series/{^[\\d]$}").permitAll()
-//				.antMatchers(HttpMethod.POST, "/series").permitAll()
-//				
-//				.antMatchers(HttpMethod.POST, "/series").permitAll()
-//
-////				only authenticated
-				.antMatchers("/hello").authenticated()
-//				.antMatchers("/users/**").authenticated()
-//				
-////				only registered user
-////				--- leaving comments or rate a series, for example
-//			    
-////				only site administrator
-//				.antMatchers("/series/**").hasRole("ADMIN")
-//				.antMatchers("/genre/**").hasRole("ADMIN")
+			
+//				login
+				.antMatchers(HttpMethod.POST, "/login").permitAll()
 				
-				.anyRequest().permitAll()
+//				series
+				.antMatchers(HttpMethod.GET, "/series").permitAll()
+				.antMatchers(HttpMethod.GET, "/series/{^[\\d]$}").permitAll()
+				.antMatchers(HttpMethod.POST, "/series/{^[\\d]$}").hasRole("ADMIN")
+				.antMatchers(HttpMethod.PUT, "/series/{^[\\d]$}").hasRole("ADMIN")
+				.antMatchers(HttpMethod.DELETE, "/series/{^[\\d]$}").hasRole("ADMIN")
+				
+//				comments
+				.antMatchers(HttpMethod.GET, "/series/{^[\\d]$}/comments").permitAll()
+				.antMatchers(HttpMethod.POST, "/series/{^[\\d]$}/comments").hasRole("USER")
+				.antMatchers(HttpMethod.DELETE, "/series/{^[\\d]$}/comments/{^[\\d]$}").hasRole("ADMIN")
+				
+//				ratings
+				.antMatchers(HttpMethod.GET, "/series/{^[\\\\d]$}/ratigns").permitAll() // or should it be permitted for logged in users only
+				
+//				users
+				.antMatchers(HttpMethod.POST, "/users").permitAll()
+//				.antMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
+				.antMatchers(HttpMethod.GET, "/users").permitAll()
+				.antMatchers("/users/**").authenticated()
+				
+
+//				temporary matcher used for testing purposes only
+//				TODO remove this matcher when not needed anymore
+				.antMatchers("/hello").authenticated()
 				
 				.and()
-//			
-			.formLogin()
-				.loginPage("/login")
-//				logout page
-				.permitAll();
-////				.successHandler(loginSuccessHandler())
-////				.failureHandler(loginFailureHandler())
-	}
+				.exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+				.and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-//	public AuthenticationSuccessHandler loginSuccessHandler() {
-//		return (request, response, authentication) -> response.sendRedirect("/");
-//	}
-	
-//	public AuthenticationFailureHandler loginFailureHandler() {
-//		return (request, response, authentication) -> {
-//			response.sendRedirect("/login");
-//		};
-//	}
+		http
+			.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+	}
 	
 	@Bean
 	public EvaluationContextExtension securityExtension() {
