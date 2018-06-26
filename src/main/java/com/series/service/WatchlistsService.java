@@ -10,13 +10,13 @@ import com.series.model.User;
 public interface WatchlistsService {
 	
 //	TODO I should move searching for logged in user into series repository
-	Series saveToWatchlist(User user, Long seriesId);
+	Series saveToWatchlist(Long userId, Long seriesId);
 	
-	Set<Series> getWatchList(User user);
+	Set<Series> getWatchList(Long userId);
 	
 //	TODO 
-	Series saveToWatchedSeriesList(User user, Long seriesId);
+	Series saveToWatchedSeriesList(Long userId, Long seriesId);
 	
-	Set<Series> getWatchedSeriesList(User user);
+	Set<Series> getWatchedSeriesList(Long userId);
 	
 }

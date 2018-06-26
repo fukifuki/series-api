@@ -55,8 +55,10 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public User findByUsername(String username) {
-		return userRepository.findByUsername(username);
+	public UserDto findByUsername(String username) {
+		User user =  userRepository.findByUsername(username);
+		
+		return userConverter.createFromEntity(user);
 	}
 	
 	@Override

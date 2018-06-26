@@ -13,10 +13,14 @@ import com.series.model.Series;
 import com.series.model.User;
 import com.series.repository.CommentRepository;
 import com.series.repository.SeriesRepository;
+import com.series.repository.UserRepository;
 
 @Service
 public class CommentServiceImpl implements CommentService {
 
+	@Autowired
+	UserRepository userRepository;
+	
 	@Autowired
 	CommentRepository commentRepository;
 	
@@ -24,11 +28,12 @@ public class CommentServiceImpl implements CommentService {
 	SeriesRepository seriesRepository;
 	
 	@Override
-	public Comment createNewComment(User user, Long seriesId, CommentDto commentDto) {
+	public Comment createNewComment(Long userId, Long seriesId, CommentDto commentDto) {
 		
-//		should I handle missing series case here or elsewhere?
+//		should I handle nonexistant series case here or elsewhere?
 //		TODO there should probably be one central place with the method for retrieving series
 		Series series = seriesRepository.getOne(seriesId);
+		User user = userRepository.getOne(userId);
 		
 //		TODO use converter class for this purpose...
 		Comment comment = new Comment();

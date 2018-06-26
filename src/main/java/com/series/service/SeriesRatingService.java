@@ -12,6 +12,6 @@ public interface SeriesRatingService {
 //	Actually, what I am not sure about is if I should user SeriesService even inside SeriesRatingController
 	Set<SeriesRatingDto> getSeriesRatings(Long seriesId);
 	
-	SeriesRating rateSeries(User user, Long seriesId, SeriesRatingDto seriesRatingDto);
+	SeriesRating rateSeries(Long userId, Long seriesId, SeriesRatingDto seriesRatingDto);
 
 }

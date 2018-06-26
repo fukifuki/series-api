@@ -12,12 +12,16 @@ import com.series.model.SeriesRating;
 import com.series.model.User;
 import com.series.repository.SeriesRatingRepository;
 import com.series.repository.SeriesRepository;
+import com.series.repository.UserRepository;
 
 @Service
 public class SeriesRatingServiceImpl implements SeriesRatingService {
 
 	@Autowired
 	SeriesRatingConverter seriesRatingConverter;
+	
+	@Autowired
+	UserRepository userRepository;
 	
 	@Autowired
 	SeriesRatingRepository seriesRatingRepository;
@@ -38,10 +42,12 @@ public class SeriesRatingServiceImpl implements SeriesRatingService {
 	
 //	TODO Change arguments order here!
 	@Override
-	public SeriesRating rateSeries(User user, Long seriesId, SeriesRatingDto seriesRatingDto) {
+	public SeriesRating rateSeries(Long userId, Long seriesId, SeriesRatingDto seriesRatingDto) {
 		
 //		TODO handle exception here
 		Series series = seriesRepository.getOne(seriesId);
+		User user = userRepository.getOne(userId);
+		
 		SeriesRating seriesRating = seriesRatingConverter.createFromDto(seriesRatingDto, user, series);
 		
 		return seriesRatingRepository.save(seriesRating);

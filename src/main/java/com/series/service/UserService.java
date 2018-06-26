@@ -13,7 +13,7 @@ public interface UserService extends UserDetailsService {
 	
 	UserDto findById(Long userId);
 	
-	User findByUsername(String username);
+	UserDto findByUsername(String username);
 	
 	UserDto update(Long userId, UserDto userDto);
 	

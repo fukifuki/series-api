@@ -21,9 +21,10 @@ public class WatchlistsServiceImpl implements WatchlistsService {
 	
 //	Maybe this method should be called with long seriesId instead of Series object
 	@Override
-	public Series saveToWatchlist(User user, Long seriesId) {
+	public Series saveToWatchlist(Long userId, Long seriesId) {
 		Series series = seriesRepository.getOne(seriesId);
 //		TODO if (series != null)...
+		User user = userRepository.getOne(userId);
 		user.getSeriesToWatch().add(series);
 		userRepository.save(user);
 		
@@ -32,14 +33,16 @@ public class WatchlistsServiceImpl implements WatchlistsService {
 	}
 
 	@Override
-	public Set<Series> getWatchList(User user) {
+	public Set<Series> getWatchList(Long userId) {
+		User user = userRepository.getOne(userId);
 		return user.getSeriesToWatch();
 	}
 
 	@Override
-	public Series saveToWatchedSeriesList(User user, Long seriesId) {
+	public Series saveToWatchedSeriesList(Long userId, Long seriesId) {
 		Series series = seriesRepository.getOne(seriesId);
 //		TODO if (series != null)...
+		User user = userRepository.getOne(userId);
 		user.getWatchedSeries().add(series);
 		userRepository.save(user);
 		
@@ -47,7 +50,8 @@ public class WatchlistsServiceImpl implements WatchlistsService {
 	}
 
 	@Override
-	public Set<Series> getWatchedSeriesList(User user) {
+	public Set<Series> getWatchedSeriesList(Long userId) {
+		User user = userRepository.getOne(userId);
 		return user.getWatchedSeries();
 	}
 	
