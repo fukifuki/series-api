@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -74,5 +75,9 @@ public class CommentController {
 		return commentService.createNewComment(userId, seriesId, commentDto);
 	}
 	
+	@DeleteMapping("/{seriesId}/comments/{id}")
+	public void deleteComment(@PathVariable("id") Long id) {
+		commentService.deleteComment(id);
+	}
 	
 }
