@@ -3,6 +3,7 @@ package com.series.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,7 +28,7 @@ public class Genre {
 	private String name;
 
 	@JsonIgnore
-	@OneToMany
+	@OneToMany(mappedBy = "genre")	
 	private Set<Series> series = new HashSet<Series>();
 	
 	public Set<Series> getSeries() {
