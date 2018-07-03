@@ -1,7 +1,6 @@
 package com.series.config;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -9,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.series.dto.UserDto;
-import com.series.model.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -43,16 +41,16 @@ public class JwtTokenUtil implements Serializable {
 		return expiration.before(new Date());
 	}
 	
-	public String generateToken(UserDto user) { 
+	public String generateToken(UserDto user) {
 		Claims claims = Jwts.claims().setSubject(user.getUsername());
 //		claims.put("scopes", Arrays.asList(user.getAuthorities()));
-		claims.put("role", user.getRole());
+//		claims.put("role", user.getRole());
 		String token = Jwts.builder()
 						.setClaims(claims)
 //						TODO set issuer!!!!!!!!!!!!!!!!!!
-//						.setIssuer("")
+						.setIssuer("")
 						.setIssuedAt(new Date(System.currentTimeMillis()))
-						.setExpiration(new Date(System.currentTimeMillis() + JwtAuthenticationFilter.ACCESS_TOKEN_VALIDITY_SECONDS))
+						.setExpiration(new Date(System.currentTimeMillis() + JwtAuthenticationFilter.ACCESS_TOKEN_VALIDITY_MILLISECONDS))
 						.signWith(SignatureAlgorithm.HS256, JwtAuthenticationFilter.SIGNING_KEY)
 						.compact();
 		
