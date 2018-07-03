@@ -16,7 +16,6 @@ public class UserConverterImpl implements UserConverter {
 	public User createFromDto(UserDto dto) {
 		User user = new User();
 		
-		user.setId(dto.getId());
 		user.setUsername(dto.getUsername());
 		user.setPassword(dto.getUsername());
 		user.setEmail(dto.getUsername());
@@ -30,8 +29,8 @@ public class UserConverterImpl implements UserConverter {
 	@Override
 	public User updateFromDto(User user, UserDto dto) {
 		user.setUsername(dto.getUsername());
-		user.setPassword(dto.getUsername());
-		user.setEmail(dto.getUsername());
+		user.setPassword(dto.getPassword());
+		user.setEmail(dto.getEmail());
 		
 		return user;
 	}
@@ -42,7 +41,8 @@ public class UserConverterImpl implements UserConverter {
 		
 		dto.setId(user.getId());
 		dto.setUsername(user.getUsername());
-		dto.setPassword(user.getPassword());
+//		TODO
+		dto.setPassword(null); // ???????????????????????????
 		dto.setEmail(user.getEmail());
 		dto.setRole(user.getRole());
 		
