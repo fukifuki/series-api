@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -64,8 +65,12 @@ public class SeriesController {
 //	TODO use service instead of repository
 	@PutMapping("/series/{id}")
 	public SeriesDto updateSeries(@PathVariable(value = "id") Long seriesId, @Valid @RequestBody SeriesDto seriesDto) {
-//		or should I call findById and than saveSeries service methods here in updateSeries method???
-//		In that case separate updateSeries in seriesService wouldn't be needed
+
 		return seriesService.updateSeries(seriesId, seriesDto);
+	}
+	
+	@DeleteMapping("/series/{id}")
+	public void deleteSeries(@PathVariable(value = "id") Long seriesId) {
+		seriesService.deleteSeries(seriesId);
 	}
 }
