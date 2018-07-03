@@ -1,33 +1,35 @@
 package com.series.config;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.series.service.UserService;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-	public static final long ACCESS_TOKEN_VALIDITY_SECONDS = 5*60*60;
+	public static final long ACCESS_TOKEN_VALIDITY_MILLISECONDS = 5*60*60*1000;
 	public static final String SIGNING_KEY = "sk123";
 	public static final String TOKEN_PREFIX = "Bearer ";
 	public static final String HEADER_STRING = "Authorization";
 
+	@Autowired
+	private UserService userService;
 	
-	private UserDetailsService userDetailsService;
-	
+	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 	
 	@Override
@@ -58,7 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 		
-			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+			UserDetails userDetails = userService.loadUserByUsername(username);
 			
 			if (jwtTokenUtil.validateToken(authToken, userDetails)) {
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
