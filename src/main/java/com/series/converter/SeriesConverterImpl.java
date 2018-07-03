@@ -24,7 +24,7 @@ public class SeriesConverterImpl implements SeriesConverter {
 	public Series createFromDto(SeriesDto dto) {
 		Series series = new Series();
 	
-//		id is generated when series is being save to the db, so it shouldn't be set in this place...
+//		id is generated when series is being saved to the db, so it shouldn't be set in this place...
 //		series.setId(dto.getId());
 		series.setTitle(dto.getTitle());
 		series.setDescription(dto.getDescription());
