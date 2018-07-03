@@ -43,21 +43,25 @@ public class Series {
 //	associated entities data fields
 //  this should in general be a many-to-many association, but let it be this way for now
 //	TODO make this proper association type
+		
 	@ManyToOne
 	@JoinColumn(name = "genre_id")
 	private Genre genre;
 
 //  TODO Remove @JsonIgnore annotations when you make it safe to do so	
 	@JsonIgnore
-	@ManyToMany(mappedBy = "seriesToWatch")
+	@ManyToMany(mappedBy = "seriesToWatch", 
+				cascade = CascadeType.ALL)
 	private Set<User> usersWhoWillWatchSeries = new HashSet<User>();
 
 	@JsonIgnore
-	@ManyToMany(mappedBy = "watchedSeries")
+	@ManyToMany(mappedBy = "watchedSeries", 
+				cascade = CascadeType.ALL)
 	private Set<User> usersWhoWatchedSeries = new HashSet<User>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "series")
+	@OneToMany(mappedBy = "series",
+			   cascade = CascadeType.ALL)
 	private Set<Comment> comments = new HashSet<Comment>();
 	
 	@JsonIgnore

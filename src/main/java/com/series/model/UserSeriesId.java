@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Embeddable
 public class UserSeriesId implements Serializable {
-	
+
 	@ManyToOne(cascade = CascadeType.ALL)
 	private User user;
 	
