@@ -26,7 +26,7 @@ public class SeriesSpecification implements Specification<Series>{
 	
 	@Override
 	public Predicate toPredicate(Root<Series> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-
+		
 		if (criterion.getOperation().equalsIgnoreCase(":")) {
 			if (root.get(criterion.getKey()).getJavaType() == String.class) {
 				return criteriaBuilder.like(
