@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.series.dto.UserDto;
-import com.series.exception.ResourceNotFoundException;
 import com.series.model.User;
-import com.series.repository.UserRepository;
 import com.series.service.RegistrationService;
 import com.series.service.UserService;
 
@@ -80,5 +79,10 @@ public class UserController {
 		
 //		TODO catch exception
 		return userService.update(userId, userDto);		
+	}
+	
+	@DeleteMapping("/users/{id}")
+	public void deleteUser(@PathVariable(value = "id") Long userId) {
+		userService.delete(userId);
 	}
 }

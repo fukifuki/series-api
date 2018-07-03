@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.series.converter.UserConverter;
 import com.series.dto.UserDto;
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService {
 	private Principal principal;
 	
 	@Override
+//	@Transactional
 	public List<UserDto> getAllUsers() {
 		
 		List<User> users = userRepository.findAll();
@@ -51,6 +53,7 @@ public class UserServiceImpl implements UserService {
 		User updatedUser = userConverter.updateFromDto(user, userDto);
 		
 //		TODO return value??? maybe I should save user to db and then convert it into userDto and send DTO back to client
+		
 		return userConverter.createFromEntity(userRepository.save(updatedUser));
 	}
 	
@@ -62,6 +65,14 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	public void delete(Long userId) {
+		
+		User user = userRepository.getOne(userId);
+		
+		userRepository.delete(user);
+	}
+	
+	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByUsername(username);
 		if (user == null) {
@@ -70,7 +81,8 @@ public class UserServiceImpl implements UserService {
 		
 		return user;
 	}
-
+	
+	
 //	Should Principal object be passed into the method as an argument instead?
 //	@Override
 //	public User getLoggedInUser() {

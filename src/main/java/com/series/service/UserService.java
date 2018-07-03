@@ -17,6 +17,8 @@ public interface UserService extends UserDetailsService {
 	
 	UserDto update(Long userId, UserDto userDto);
 	
+	void delete(Long userId);
+	
 //	TODO find a way to get a logged in user here...
 //	User getLoggedInUser();
 	
