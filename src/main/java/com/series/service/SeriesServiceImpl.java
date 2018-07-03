@@ -93,4 +93,11 @@ public class SeriesServiceImpl implements SeriesService {
 		return seriesConverter.createFromEntity(seriesRepository.save(updatedSeries));
 	}
 	
+	@Override
+	public void deleteSeries(Long seriesId) {
+		
+		Series series = seriesRepository.getOne(seriesId);
+
+		seriesRepository.delete(series);
+	}
 }

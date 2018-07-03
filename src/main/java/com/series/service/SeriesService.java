@@ -20,6 +20,9 @@ public interface SeriesService {
 	
 	SeriesDto updateSeries(Long seriesId, SeriesDto seriesDto);
 	
+	void deleteSeries(Long seriesId);
+	
+	
 //	TODO findNewerThen
 //	TODO findOlderThen
 //	TODO findTopRated
