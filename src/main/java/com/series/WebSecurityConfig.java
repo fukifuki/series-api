@@ -70,11 +70,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.POST, "/login").permitAll()
 				
 //				series
-				.antMatchers(HttpMethod.GET, "/series").permitAll()
-				.antMatchers(HttpMethod.GET, "/series/{^[\\d]$}").permitAll()
-				.antMatchers(HttpMethod.POST, "/series/{^[\\d]$}").hasRole("ADMIN")
-				.antMatchers(HttpMethod.PUT, "/series/{^[\\d]$}").hasRole("ADMIN")
-				.antMatchers(HttpMethod.DELETE, "/series/{^[\\d]$}").hasRole("ADMIN")
+//				.antMatchers(HttpMethod.GET, "/series").permitAll()
+//				.antMatchers(HttpMethod.GET, "/series/{^[\\d]$}").permitAll()
+//				.antMatchers(HttpMethod.POST, "/series/{^[\\d]$}").hasRole("ADMIN")
+//				.antMatchers(HttpMethod.PUT, "/series/{^[\\d]$}").hasRole("ADMIN")
+//				.antMatchers(HttpMethod.DELETE, "/series/{^[\\d]$}").permitAll()
+				.antMatchers("/series/**").permitAll()
 				
 //				comments
 				.antMatchers(HttpMethod.GET, "/series/{^[\\d]$}/comments").permitAll()
@@ -82,15 +83,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.DELETE, "/series/{^[\\d]$}/comments/{^[\\d]$}").hasRole("ADMIN")
 				
 //				ratings
-				.antMatchers(HttpMethod.GET, "/series/{^[\\\\d]$}/ratigns").permitAll() // or should it be permitted for logged in users only
+				.antMatchers(HttpMethod.GET, "/series/{^[\\d]$}/ratigns").permitAll() // or should it be permitted for logged in users only
 				
 //				users
 				.antMatchers(HttpMethod.POST, "/users").permitAll()
 //				.antMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
 				.antMatchers(HttpMethod.GET, "/users").permitAll()
-				.antMatchers("/users/**").authenticated()
+				.antMatchers(HttpMethod.DELETE, "/users/{^[\\d]$}").permitAll()
+//				.antMatchers("/users/**").authenticated()
 				
-
+////			watchlist
+				.antMatchers(HttpMethod.GET, "/users/{^[\\d]$}/watchlist").permitAll()
+				.antMatchers(HttpMethod.POST, "/users/{^[\\d]$}/watchlist/{^[\\d]$}").permitAll()
+//				.antMatchers(HttpMethod.DELETE, "/users/{^[\\d]$}/watchlist/{^[]$}").permitAll()
+//				
+				.antMatchers(HttpMethod.GET, "/watchlist").permitAll()
+				
+////			history
+				.antMatchers(HttpMethod.GET, "/users/{^[\\d]$}/watchlist").permitAll()
+				.antMatchers(HttpMethod.POST, "/users/{^[\\d]$}/watchlist/{^[\\d]$}").permitAll()
+//				.antMatchers(HttpMethod.DELETE, "/users/{^[]$}/watchlist/{^[]$}").permitAll()
+				
+				
+				
 //				temporary matcher used for testing purposes only
 //				TODO remove this matcher when not needed anymore
 				.antMatchers("/hello").authenticated()

@@ -37,6 +37,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDto findById(Long userId) {
+		System.out.println("user id from UserServiceImpl: ");
+		System.out.println(userId);
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
 		

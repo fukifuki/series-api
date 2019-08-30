@@ -58,21 +58,21 @@ public class UserController {
 		return user;
 	}
 	
-//	@PreAuthorize("#id == principal.getUserId")
-//	@GetMapping("/users/{id}")
-//	public UserDto getUserById(@PathVariable(value = "id") Long userId) {
-//
-////		TODO catch exception
-//		return userService.findById(userId);
-//	}
-	
-	@PreAuthorize("#username == principal.username")
-	@GetMapping("/users/{username}")
-	public UserDto getUserByUsername(@PathVariable(value = "username") String username) {
-		
+	@PreAuthorize("#id == principal.getUserId")
+	@GetMapping("/users/{id}")
+	public UserDto getUserById(@PathVariable(value = "id") Long userId) {
+
 //		TODO catch exception
-		return userService.findByUsername(username);
+		return userService.findById(userId);
 	}
+	
+//	@PreAuthorize("#username == principal.username")
+//	@GetMapping("/users/{username}")
+//	public UserDto getUserByUsername(@PathVariable(value = "username") String username) {
+//		
+////		TODO catch exception
+//		return userService.findByUsername(username);
+//	}
 	
 	@PutMapping("/users/{id}")
 	public UserDto updateUser(@PathVariable(value = "id") Long userId, @Valid @RequestBody UserDto userDto) {
